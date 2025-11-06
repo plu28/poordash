@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import './App.css'
+// import { useState } from 'react'
+import "./index.css";
 
 function App() {
 
-  return (
-    <>
-    </>
-  )
+	return (
+		<>
+			<p className="text-sm font-medium">this is poordash</p>
+		</>
+	)
 }
 
 export default App
