@@ -7,6 +7,7 @@ import UserChefCard from "./components/UserChefCard";
 import ChefMenuItem from "./components/ChefMenuItem";
 import UserOrderContainer from "./components/UserOrderContainer";
 import { Rating, RatingButton } from '@/components/ui/shadcn-io/rating';
+import { Toggle } from "@/components/ui/toggle"
 
 function App() {
 	const [userType, setUserType] = useState<"customer" | "chef">("customer");
@@ -85,6 +86,12 @@ function App() {
 						<p className="text-xs text-muted-foreground">Rating: {rating1}</p>
 					</div>
 				</div> </div>
+			<Toggle
+				variant="outline"
+				className="transition-colors duration-200 data-[state=on]:bg-yellow-200 data-[state=off]:bg-transparent"
+			>
+				Tag
+			</Toggle>
 		</Layout>
 	);
 }
