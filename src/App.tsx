@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Layout from "./components/Layout";
+import { Input } from "./components/ui/input";
 import "./index.css";
 import Header from "./components/Header";
 import UserChefCard from "./components/UserChefCard";
@@ -51,6 +52,7 @@ function App() {
               customer or chef.
             </p>
           </div>
+          <Input type="" placeholder="Sample Input"/>
           <UserChefCard
             chefName="Lebron James"
             distance={14.2}
