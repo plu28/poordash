@@ -54,6 +54,7 @@ function App() {
           <UserChefCard
             chefName="Lebron James"
             distance={14.2}
+            cuisine={["Italian", "American"]}
             rating={4.9}
             imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxAHd2tu9iRcRE27Ne8590JlB3L3PSpOoa7xKUsG7Jt9Fe3Xuo_tQLLGrzCstLGIOZ3wLy5nmxtMABX04mdC5Qr77HMkngQgnzq4_TUlzI&s=10"
           />
