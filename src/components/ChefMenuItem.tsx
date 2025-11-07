@@ -44,8 +44,8 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
       <div>
         <p className="font-medium">Ingredients</p>
         <ul className="text-sm text-gray-700">
-          {ingredients.map((item, index) => (
-            <li key={index}>{item}</li>
+          {ingredients.map((item) => (
+            <li key={item}>{item}</li>
           ))}
         </ul>
       </div>
