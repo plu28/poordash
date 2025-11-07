@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Layout from "./components/Layout";
+import { Input } from "./components/ui/input";
 import "./index.css";
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
               customer or chef.
             </p>
           </div>
+		<Input type="" placeholder="Sample Input"/>
         </div>
       </div>
     </Layout>
