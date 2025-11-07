@@ -18,7 +18,7 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
   imageUrl
 }) => {
   return (
-    <div className="grid grid-cols-2 grid-cols-[auto_1fr] gap-3
+    <div className="grid grid-cols-[auto_1fr] gap-3
     bg-white p-6 rounded-lg shadow-sm border">
       <img
         src={imageUrl}
