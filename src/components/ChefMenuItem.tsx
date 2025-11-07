@@ -35,8 +35,8 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
       <div className="text-right">
         <p className="font-medium">Nutrition Facts</p>
         <ul className="text-sm text-gray-700">
-          {nutritionFacts.map((fact, index) => (
-            <li key={index}>{fact}</li>
+          {nutritionFacts.map((fact) => (
+            <li key={fact}>{fact}</li>
           ))}
         </ul>
       </div>
