@@ -53,7 +53,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg",
+        "fixed bottom-0 left-1/2 -translate-x-1/2 w-[475px] z-50 bg-white border-t border-gray-200 shadow-lg",
         className
       )}
     >
