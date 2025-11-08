@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import "../index.css";
 import {
   Home,
   Search,
-  ShoppingCart,
   User,
   ChefHat,
   ClipboardList,
@@ -26,15 +26,15 @@ interface NavItem {
 
 const customerNavItems: NavItem[] = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Search, label: "Browse", path: "/" },
-  { icon: ShoppingCart, label: "Orders", path: "/orders" },
+  { icon: Search, label: "Browse", path: "/browse" },
+  { icon: ClipboardList, label: "Orders", path: "/customer-orders" },
   { icon: User, label: "Profile", path: "/profile" },
 ];
 
 const chefNavItems: NavItem[] = [
   { icon: LayoutIcon, label: "Dashboard", path: "/" },
-  { icon: ChefHat, label: "Menu", path: "/" },
-  { icon: ClipboardList, label: "Orders", path: "/orders" },
+  { icon: ChefHat, label: "Menu", path: "/menu" },
+  { icon: ClipboardList, label: "Orders", path: "/chef-orders" },
   { icon: User, label: "Profile", path: "/profile" },
 ];
 
@@ -63,7 +63,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
           const isActive = location.pathname === item.path;
           return (
             <Link
-              key={item.path}
+              key={`${item.path}-${item.label}`}
               to={item.path}
               onClick={() => handleItemClick(item.path)}
               className={cn(

@@ -25,7 +25,7 @@ const getNavItems = (variant: Variant, onLogout?: () => void): NavItem[] => {
     return [
       ...common,
       { label: "Browse Chefs", href: "/chefs" },
-      { label: "My Orders", href: "/orders" },
+      { label: "My Orders", href: "/customer-orders" },
       { label: "Cart", href: "/cart" },
       { label: "Profile", href: "/profile" },
       { label: "Logout", href: "#logout", onClick: onLogout },
@@ -36,7 +36,7 @@ const getNavItems = (variant: Variant, onLogout?: () => void): NavItem[] => {
     return [
       ...common,
       { label: "Dashboard", href: "/chef/dashboard" },
-      { label: "Orders", href: "/chef/orders" },
+      { label: "Orders", href: "/chef-orders" },
       { label: "Menu", href: "/chef/menu" },
       { label: "Earnings", href: "/chef/earnings" },
       { label: "Profile", href: "/profile" },
