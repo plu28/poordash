@@ -1,17 +1,23 @@
+import { useState } from "react";
 import Layout from "../components/Layout";
 import Header from "../components/Header";
 import ChefActiveOrder from "../components/ChefActiveOrder";
 
-import type { Order } from "../types/index";
+import type { StateType } from "../types/index";
 
 import { getOrders, updateOrder } from "../lib/orderStorage";
 
 const ChefOrders = () => {
+	const [orders, setOrders] = useState(getOrders());
 
-	const orders: Order[] = getOrders();
-
-	// Subset of orders which arent complete
+	// Only shows orders which aren't complete
 	const activeOrders = orders.filter((order) => order.state !== "Complete")
+
+	const handleStateChange = (id: string, newState: StateType): void => {
+		updateOrder(id, {state: newState});
+		setOrders(getOrders());
+	}
+
 
 	return (
 		<Layout showBottomNav={true} bottomNavVariant="chef">
@@ -30,7 +36,7 @@ const ChefOrders = () => {
 								state={order.state}
 								deliveryAddress={order.deliveryAddress}
 								orderDate={order.orderDate}
-								onChangeState={updateOrder}
+								onChangeState={handleStateChange}
 							/>
 						)
 					})
