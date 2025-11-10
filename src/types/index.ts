@@ -5,6 +5,8 @@ export interface Review {
 	date: string; // ISO date string
 }
 
+export type StateType = "NotStarted" | "InProgress" | "Ready" | "Complete";
+
 export interface Order {
 	id: string;
 	chefName?: string;
@@ -13,7 +15,7 @@ export interface Order {
 	orderDate: string; // ISO date string
 	price: number;
 	options?: string[]; // Optional, only if specified
-	state: "NotStarted" | "InProgress" | "Ready" | "Complete"; // New order should be NotStarted 
+	state: StateType; // New order should be NotStarted 
 	deliveryAddress?: string; // Optional, only if this is a delivery order
 	review?: Review; // Optional, only if reviewed
 }
