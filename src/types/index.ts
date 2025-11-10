@@ -7,6 +7,13 @@ export interface Review {
 
 export type StateType = "NotStarted" | "InProgress" | "Ready" | "Complete";
 
+export interface Delivery {
+	address: string;
+	city: string;
+	usState: string;
+	zip: string;
+}
+
 export interface Order {
 	id: string;
 	chefName?: string;
@@ -18,7 +25,9 @@ export interface Order {
 	state: StateType; // New order should be NotStarted 
 	deliveryAddress?: string; // Optional, only if this is a delivery order
 	review?: Review; // Optional, only if reviewed
+	delivery?: Delivery;
 }
+
 
 export const PREDEFINED_TAGS = [
 	// Food quality

@@ -1,6 +1,9 @@
 import React from "react";
+import { Link } from "react-router";
 
 interface ChefMenuItemProps {
+  chefSlug: string;
+  mealSlug: string;
   mealName: string;
   price: number;
   grams: number;
@@ -10,6 +13,8 @@ interface ChefMenuItemProps {
 }
 
 const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
+  chefSlug,
+  mealSlug,
   mealName,
   price,
   grams,
@@ -18,7 +23,9 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
   imageUrl
 }) => {
   return (
-    <div className="grid grid-cols-[auto_1fr] gap-3
+    <Link
+      to={`/order/${chefSlug}/${mealSlug}`}
+      className="grid grid-cols-[auto_1fr] gap-3
     bg-white p-6 rounded-lg shadow-sm border">
       <img
         src={imageUrl}
@@ -49,7 +56,7 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
           ))}
         </ul>
       </div>
-    </div>
+    </Link>
   )
 }
 

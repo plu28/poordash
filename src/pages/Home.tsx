@@ -6,6 +6,7 @@ const Home = () => {
   const chefs = [
     {
       chefName: "Lebron James",
+      slug: "lebron-james",
       distance: 14.2,
       cuisine: ["Italian", "American"],
       rating: 4.9,
@@ -13,6 +14,7 @@ const Home = () => {
     },
     {
       chefName: "Gordon Ramsay",
+      slug: "gordon-ramsay",
       distance: 8.1,
       cuisine: ["British", "French"],
       rating: 4.8,
@@ -28,6 +30,7 @@ const Home = () => {
           {chefs.map((chef, index) => (
             <UserChefCard
               key={index}
+              slug={chef.slug}
               chefName={chef.chefName}
               distance={chef.distance}
               cuisine={chef.cuisine}
