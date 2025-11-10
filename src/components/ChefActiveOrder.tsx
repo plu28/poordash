@@ -15,8 +15,8 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 	options,
 	imageUrl,
 	state,
-	deliveryAddress,
 	onChangeState,
+	delivery,
 }) => {
 
 
@@ -31,6 +31,11 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 		style: "currency",
 		currency: "USD",
 	}).format(price);
+
+	let deliveryFormatted
+	if (delivery) {
+		deliveryFormatted = `${delivery.address}, ${delivery.city} ${delivery.zip}`;
+	}
 
 	return (
 		<div className="flex flex-row bg-white gap-x-4 p-6 rounded-lg shadow-sm border relative">
@@ -59,8 +64,8 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 
 				<div>
 					<p className="font-semibold text-md">Delivery</p>
-					{deliveryAddress ? 
-						<p className="font-light leading-none">{deliveryAddress}</p>
+					{deliveryFormatted ? 
+						<p className="font-light leading-none">{deliveryFormatted}</p>
 						:
 						<p className="text-gray-500 text-md leading-none">Customer will pickup when the order is ready.</p>
 					}

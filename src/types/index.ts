@@ -23,7 +23,6 @@ export interface Order {
 	price: number;
 	options?: string[]; // Optional, only if specified
 	state: StateType; // New order should be NotStarted 
-	deliveryAddress?: string; // Optional, only if this is a delivery order
 	review?: Review; // Optional, only if reviewed
 	delivery?: Delivery;
 }

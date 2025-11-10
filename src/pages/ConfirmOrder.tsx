@@ -43,6 +43,8 @@ const ConfirmOrder = () => {
       imageUrl,
       orderDate: new Date().toISOString(),
       delivery,
+			state: "NotStarted",
+			price: price + Number(tips || 0)
     };
 
     addOrder(newOrder);

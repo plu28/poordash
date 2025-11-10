@@ -34,7 +34,7 @@ const ChefOrders = () => {
 								options={order.options}
 								imageUrl={order.imageUrl}
 								state={order.state}
-								deliveryAddress={order.deliveryAddress}
+								delivery={order.delivery}
 								orderDate={order.orderDate}
 								onChangeState={handleStateChange}
 							/>
