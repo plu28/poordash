@@ -5,6 +5,13 @@ export interface Review {
   date: string; // ISO date string
 }
 
+export interface Delivery {
+  address: string;
+  city: string;
+  usState: string;
+  zip: string;
+}
+
 export interface Order {
   id: string;
   chefName: string;
@@ -12,6 +19,7 @@ export interface Order {
   imageUrl: string;
   orderDate: string; // ISO date string
   review?: Review; // Optional, only if reviewed
+  delivery?: Delivery;
 }
 
 export const PREDEFINED_TAGS = [

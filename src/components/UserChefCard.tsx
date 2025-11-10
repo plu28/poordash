@@ -1,8 +1,11 @@
 import React from "react";
 import { Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
+
 
 interface UserChefCardProps {
+  slug: string;
   chefName: string;
   distance: number;
   cuisine?: string[];
@@ -11,6 +14,7 @@ interface UserChefCardProps {
 }
 
 const UserChefCard: React.FC<UserChefCardProps> = ({
+  slug,
   chefName,
   distance,
   cuisine,
@@ -18,7 +22,9 @@ const UserChefCard: React.FC<UserChefCardProps> = ({
   imageUrl,
 }) => {
   return (
-    <div className="flex gap-3 bg-white p-6 rounded-lg shadow-sm border">
+    <Link
+      to={`/chef/${slug}`}
+      className="flex gap-3 bg-white p-6 rounded-lg shadow-sm border">
       <img
         src={imageUrl}
         alt={`${chefName}'s image`}
@@ -40,7 +46,7 @@ const UserChefCard: React.FC<UserChefCardProps> = ({
           {rating} <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 
