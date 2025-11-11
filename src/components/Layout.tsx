@@ -19,7 +19,7 @@ export const Layout: React.FC<LayoutProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`min-h-screen bg-gray-50 flex flex-col ${className}`}>
+    <div className={`mx-auto max-w-[475px] bg-gray-50 flex flex-col ${className}`}>
       {/* Main content area */}
       <main className={`flex-1 ${showBottomNav ? "pb-16" : ""}`}>
         <div className="container mx-auto px-4 py-6 max-w-7xl">{children}</div>
