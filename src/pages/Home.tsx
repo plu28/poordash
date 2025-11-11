@@ -18,7 +18,7 @@ const Home = () => {
       distance: 8.1,
       cuisine: ["British", "French"],
       rating: 4.8,
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Gordon_Ramsay.jpg",
+      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmIg5ndNSuWsPTO-KHZAzzV69oc5tVQXSIBAGjq3B6Wt70w6chyZHRleKJ7XwddhiCN8Ufj8rMeu2ZJ1pTaHuX98q__oN7PxAUXk1KRic&s=10",
     },
   ];
 

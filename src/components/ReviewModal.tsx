@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Order } from "../types";
 import { PREDEFINED_TAGS } from "../types";
 
@@ -24,7 +24,17 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [customTag, setCustomTag] = useState("");
   const [customTags, setCustomTags] = useState<string[]>([]);
-  const [showThankYou, setShowThankYou] = useState(false);
+
+  // Reset form state when modal opens with a new order
+  useEffect(() => {
+    if (isOpen && order) {
+      setRating(5);
+      setComment("");
+      setSelectedTags([]);
+      setCustomTag("");
+      setCustomTags([]);
+    }
+  }, [isOpen, order]);
 
   if (!isOpen || !order) return null;
 
@@ -62,208 +72,161 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       comment: comment.trim(),
       tags: selectedTags,
     });
-    setShowThankYou(true);
   };
 
   const handleClose = () => {
-    setRating(5);
-    setComment("");
-    setSelectedTags([]);
-    setCustomTag("");
-    setCustomTags([]);
-    setShowThankYou(false);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-60 p-4">
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          {showThankYou ? (
-            <div className="text-center">
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex-1"></div>
-                <button
-                  onClick={handleClose}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
-                >
-                  ×
-                </button>
+          <div className="flex justify-between items-start mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Leave a Review</h2>
+            <button
+              onClick={handleClose}
+              className="text-gray-400 hover:text-gray-600 text-2xl"
+            >
+              ×
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="flex gap-4">
+              <img
+                src={order.imageUrl}
+                alt={order.dishName}
+                className="w-20 h-20 object-cover rounded-lg shrink-0"
+              />
+              <div>
+                <h3 className="font-semibold text-gray-900">
+                  {order.dishName}
+                </h3>
+                <p className="text-gray-600">by {order.chefName}</p>
               </div>
-              <div className="mb-8">
-                <div className="text-6xl mb-4">🙏</div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Thank You!
-                </h2>
-                <p className="text-lg text-gray-600 mb-2">
-                  Your feedback helps keep our platform honest and our community
-                  strong.
-                </p>
-                <p className="text-gray-500">
-                  Reviews like yours help other customers make informed
-                  decisions and ensure quality across our platform.
-                </p>
-              </div>
-              <button
-                onClick={handleClose}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                Continue
-              </button>
             </div>
-          ) : (
-            <>
-              <div className="flex justify-between items-start mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Leave a Review
-                </h2>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Rating *
+              </label>
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => handleStarClick(star)}
+                    className={`text-3xl hover:scale-110 transition-transform ${
+                      star <= rating ? "text-yellow-400" : "text-gray-300"
+                    }`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Comment (optional)
+              </label>
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Share your experience with this dish..."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                rows={4}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Tags (optional)
+              </label>
+
+              {/* Add custom tag input */}
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="text"
+                  value={customTag}
+                  onChange={(e) => setCustomTag(e.target.value)}
+                  placeholder="Add custom tag..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onKeyPress={(e) =>
+                    e.key === "Enter" &&
+                    (e.preventDefault(), handleAddCustomTag())
+                  }
+                />
                 <button
-                  onClick={handleClose}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  type="button"
+                  onClick={handleAddCustomTag}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  disabled={!customTag.trim()}
                 >
-                  ×
+                  Add
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="flex gap-4">
-                  <img
-                    src={order.imageUrl}
-                    alt={order.dishName}
-                    className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {order.dishName}
-                    </h3>
-                    <p className="text-gray-600">by {order.chefName}</p>
-                  </div>
+              {/* Predefined tags */}
+              <div className="mb-3">
+                <p className="text-xs text-gray-500 mb-2">Suggested tags:</p>
+                <div className="flex flex-wrap gap-2">
+                  {PREDEFINED_TAGS.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => handleTagToggle(tag)}
+                      className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
+                        selectedTags.includes(tag)
+                          ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
+                          : "bg-gray-100 text-gray-700 border-2 border-gray-200 hover:bg-gray-200"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
+              {/* Custom tags */}
+              {customTags.length > 0 && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rating *
-                  </label>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
+                  <p className="text-xs text-gray-500 mb-2">
+                    Your custom tags:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {customTags.map((tag) => (
                       <button
-                        key={star}
+                        key={tag}
                         type="button"
-                        onClick={() => handleStarClick(star)}
-                        className={`text-3xl hover:scale-110 transition-transform ${
-                          star <= rating ? "text-yellow-400" : "text-gray-300"
-                        }`}
+                        onClick={() => handleRemoveCustomTag(tag)}
+                        className="px-3 py-2 bg-green-100 text-green-800 border-2 border-green-300 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
                       >
-                        ★
+                        {tag} ×
                       </button>
                     ))}
                   </div>
                 </div>
+              )}
+            </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Comment (optional)
-                  </label>
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Share your experience with this dish..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                    rows={4}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Tags (optional)
-                  </label>
-
-                  {/* Add custom tag input */}
-                  <div className="flex gap-2 mb-3">
-                    <input
-                      type="text"
-                      value={customTag}
-                      onChange={(e) => setCustomTag(e.target.value)}
-                      placeholder="Add custom tag..."
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      onKeyPress={(e) =>
-                        e.key === "Enter" &&
-                        (e.preventDefault(), handleAddCustomTag())
-                      }
-                    />
-                    <button
-                      type="button"
-                      onClick={handleAddCustomTag}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                      disabled={!customTag.trim()}
-                    >
-                      Add
-                    </button>
-                  </div>
-
-                  {/* Predefined tags */}
-                  <div className="mb-3">
-                    <p className="text-xs text-gray-500 mb-2">
-                      Suggested tags:
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {PREDEFINED_TAGS.map((tag) => (
-                        <button
-                          key={tag}
-                          type="button"
-                          onClick={() => handleTagToggle(tag)}
-                          className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
-                            selectedTags.includes(tag)
-                              ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
-                              : "bg-gray-100 text-gray-700 border-2 border-gray-200 hover:bg-gray-200"
-                          }`}
-                        >
-                          {tag}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Custom tags */}
-                  {customTags.length > 0 && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-2">
-                        Your custom tags:
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {customTags.map((tag) => (
-                          <button
-                            key={tag}
-                            type="button"
-                            onClick={() => handleRemoveCustomTag(tag)}
-                            className="px-3 py-2 bg-green-100 text-green-800 border-2 border-green-300 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
-                          >
-                            {tag} ×
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex justify-end gap-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={handleClose}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Submit Review
-                  </button>
-                </div>
-              </form>
-            </>
-          )}
+            <div className="flex justify-end gap-3 pt-4">
+              <button
+                type="button"
+                onClick={handleClose}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Submit Review
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

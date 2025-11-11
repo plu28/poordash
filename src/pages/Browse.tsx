@@ -10,7 +10,8 @@ const Browse = () => {
       distance: 14.2,
       cuisine: ["Italian", "American"],
       rating: 4.9,
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxAHd2tu9iRcRE27Ne8590JlB3L3PSpOoa7xKUsG7Jt9Fe3Xuo_tQLLGrzCstLGIOZ3wLy5nmxtMABX04mdC5Qr77HMkngQgnzq4_TUlzI&s=10",
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxAHd2tu9iRcRE27Ne8590JlB3L3PSpOoa7xKUsG7Jt9Fe3Xuo_tQLLGrzCstLGIOZ3wLy5nmxtMABX04mdC5Qr77HMkngQgnzq4_TUlzI&s=10",
     },
     {
       chefName: "Gordon Ramsay",
@@ -18,7 +19,8 @@ const Browse = () => {
       distance: 8.1,
       cuisine: ["British", "French"],
       rating: 4.8,
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Gordon_Ramsay.jpg",
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmIg5ndNSuWsPTO-KHZAzzV69oc5tVQXSIBAGjq3B6Wt70w6chyZHRleKJ7XwddhiCN8Ufj8rMeu2ZJ1pTaHuX98q__oN7PxAUXk1KRic&s=10",
     },
   ];
 
