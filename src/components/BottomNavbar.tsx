@@ -32,7 +32,7 @@ const customerNavItems: NavItem[] = [
 ];
 
 const chefNavItems: NavItem[] = [
-  { icon: LayoutIcon, label: "Dashboard", path: "/" },
+  { icon: LayoutIcon, label: "Dashboard", path: "/dashboard" },
   { icon: ChefHat, label: "Menu", path: "/menu" },
   { icon: ClipboardList, label: "Orders", path: "/chef-orders" },
   { icon: User, label: "Profile", path: "/profile" },

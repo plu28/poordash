@@ -3,11 +3,17 @@ import Layout from "../components/Layout";
 import Header from "../components/Header";
 
 const Profile = () => {
-  const [userType, setUserType] = useState<"customer" | "chef">("customer");
+const [userType, setUserType] = useState<"customer" | "chef">(() => {
+  return (localStorage.getItem("userType") as "customer" | "chef") || "customer";
+});
 
-  const toggleUserType = () => {
-    setUserType((prev) => (prev === "customer" ? "chef" : "customer"));
-  };
+const toggleUserType = () => {
+  setUserType((prev) => {
+    const newType = prev === "customer" ? "chef" : "customer";
+    localStorage.setItem("userType", newType);
+    return newType;
+  });
+};
 
   return (
     <Layout showBottomNav={true} bottomNavVariant={userType}>
