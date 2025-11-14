@@ -9,6 +9,7 @@ import UserMenu from "./pages/UserMenu";
 import OrderForm from "./pages/OrderForm";
 import ConfirmOrder from "./pages/ConfirmOrder";
 import OrderConfirmed from "./pages/OrderConfirmed";
+import Dashboard from "./pages/Dashboard";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path="/order/:chefSlug/:mealSlug" element={<OrderForm />} />
       <Route path="/confirm-order" element={<ConfirmOrder />} />
       <Route path="/order-confirmed" element={<OrderConfirmed />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }

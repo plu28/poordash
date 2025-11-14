@@ -35,7 +35,7 @@ const getNavItems = (variant: Variant, onLogout?: () => void): NavItem[] => {
   if (variant === "chef") {
     return [
       ...common,
-      { label: "Dashboard", href: "/chef/dashboard" },
+      { label: "Dashboard", href: "/dashboard" },
       { label: "Orders", href: "/chef-orders" },
       { label: "Menu", href: "/chef/menu" },
       { label: "Earnings", href: "/chef/earnings" },
