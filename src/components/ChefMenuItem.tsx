@@ -34,7 +34,7 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
       />
 
       <div className="flex flex-col gap-y-2">
-        <p className="font-semibold text-xl leading-none -mt-0.5">{mealName}</p>
+        <p className="font-semibold text-2xl leading-none -mt-0.5">{mealName}</p>
         <p className="font-semibold text-lg leading-none">${price.toFixed(2)}</p>
         <p className="text-sm text-gray-600 leading-none">{grams} grams</p>
       </div>

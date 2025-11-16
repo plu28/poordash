@@ -91,8 +91,8 @@ const ConfirmOrder = () => {
             <span>${Number(tips || 0).toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span>Total</span>
-            <span>${total.toFixed(2)}</span>
+            <span><b>Total</b></span>
+            <span><b>${total.toFixed(2)}</b></span>
           </div>
 
           <button 
