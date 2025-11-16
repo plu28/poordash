@@ -30,6 +30,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
     );
   };
 
+  const draftKey = `review_draft_${order.id}`;
+  const isDraft = !!localStorage.getItem(draftKey);
+
   return (
     <div
       className="bg-white rounded-lg shadow-sm border p-4 cursor-pointer hover:shadow-md transition-shadow"
@@ -45,6 +48,10 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
           <h3 className="font-semibold text-gray-900 truncate">{order.dishName}</h3>
           <p className="text-sm text-gray-600">{order.chefName}</p>
           <p className="text-xs text-gray-500 mt-1">{formatDate(order.orderDate)}</p>
+
+          {!order.review && isDraft && (
+            <p className='italic text-xs text-red-500'> Review saved as draft</p>
+          )}
 
           {order.review && (
             <div className="mt-2">

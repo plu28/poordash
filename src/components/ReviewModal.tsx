@@ -28,24 +28,44 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   // Reset form state when modal opens with a new order
   useEffect(() => {
     if (isOpen && order) {
-      setRating(5);
-      setComment("");
-      setSelectedTags([]);
+      const storageKey = `review_draft_${order.id}`;
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}")
+      setRating(saved.rating || 5);
+      setComment(saved.comment || "");
+      setSelectedTags(saved.tags || []);
       setCustomTag("");
-      setCustomTags([]);
+      setCustomTags(saved.customTags || []);
     }
   }, [isOpen, order]);
 
   if (!isOpen || !order) return null;
 
+  const saveDraft = (key: string, value: string | string[]) => {
+  if (!order) {
+    return;
+  } 
+  const storageKey = `review_draft_${order.id}`;
+  const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  draft[key] = value;
+  localStorage.setItem(storageKey, JSON.stringify(draft));
+};
+
   const handleStarClick = (starRating: number) => {
     setRating(starRating);
+    saveDraft("rating", starRating.toString());
   };
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    setSelectedTags((prev) => {
+      let stored; 
+      if (prev.includes(tag)) {
+        stored = prev.filter((t) => t !== tag);
+      } else {
+        stored = [...prev, tag];
+      }
+      saveDraft("tags", stored);
+      return stored;
+    });
   };
 
   const handleAddCustomTag = () => {
@@ -54,15 +74,31 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       !customTags.includes(customTag.trim()) &&
       !selectedTags.includes(customTag.trim())
     ) {
-      setCustomTags((prev) => [...prev, customTag.trim()]);
-      setSelectedTags((prev) => [...prev, customTag.trim()]);
+      setCustomTags((prev) => {
+        const stored = [...prev, customTag.trim()];
+        saveDraft("customTags", stored);
+        return stored;
+    });
+      setSelectedTags((prev) => {
+        const stored = [...prev, customTag.trim()];
+        saveDraft("tags", stored);
+        return stored;
+    });
       setCustomTag("");
     }
   };
 
   const handleRemoveCustomTag = (tag: string) => {
-    setCustomTags((prev) => prev.filter((t) => t !== tag));
-    setSelectedTags((prev) => prev.filter((t) => t !== tag));
+    setCustomTags((prev) => {
+      const stored = prev.filter((t) => t !== tag);
+      saveDraft("customTags", stored);
+      return stored;
+    });
+    setSelectedTags((prev) => {
+      const stored = prev.filter((t) => t !== tag);
+      saveDraft("tags", stored);
+      return stored;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -133,7 +169,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               </label>
               <textarea
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                  saveDraft("comment", e.target.value);
+                }}
                 placeholder="Share your experience with this dish..."
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 rows={4}

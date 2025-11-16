@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
@@ -18,8 +18,38 @@ const OrderForm = () => {
 
   const [tips, setTips] = useState("");
 
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("checkout_form") || "{}");
+    if (saved.address) {
+    setAddress(saved.address); 
+    }
+    if (saved.city) {
+      setCity(saved.city);
+    }
+    if (saved.usState) {
+      setUsState(saved.usState);
+    } 
+    if (saved.zip) {
+      setZip(saved.zip);
+    }
+    if (saved.cardNumber) {
+      setCardNumber(saved.cardNumber); 
+    }
+    if (saved.expDate) {
+      setExpDate(saved.expDate);
+    }
+    if (saved.cvv) {
+      setCvv(saved.cvv);
+    } 
+  }, []);
+
+  const saveField = (key: string, value: string) => {
+    const field = JSON.parse(localStorage.getItem("checkout_form") || "{}");
+    field[key] = value;
+    localStorage.setItem("checkout_form", JSON.stringify(field));
+  };
 
   const menu = [
     {
@@ -154,6 +184,7 @@ const OrderForm = () => {
               onChange={(e) => {
                 setAddress(e.target.value);
                 errors.address && setErrors(prev => ({ ...prev, address: "" }));
+                saveField("address", e.target.value);
               }}
               className={errors.address ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""}
             />
@@ -164,6 +195,7 @@ const OrderForm = () => {
                   <Input value={city} onChange={(e) => {
                     setCity(e.target.value);
                     errors.city && setErrors(prev => ({ ...prev, city: "" }));
+                    saveField("city", e.target.value);
                   }}
                   className={errors.city ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
@@ -180,6 +212,7 @@ const OrderForm = () => {
                     setUsState(value);
                     (errors.usState && value.length === 2) &&
                     setErrors(prev => ({ ...prev, usState: "" }));
+                    saveField("usState", value);
                   }}
                   className={errors.usState ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                 />
@@ -196,6 +229,7 @@ const OrderForm = () => {
                       setZip(newZip);
                       (errors.zip && newZip.length === 5) &&
                       setErrors(prev => ({ ...prev, zip: "" }));
+                      saveField("zip", newZip);
                     }}
                     className={errors.zip ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
@@ -211,9 +245,10 @@ const OrderForm = () => {
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, "").slice(0, 16);
                 let newValue = value.replace(/(.{4})/g, "$1 ").trim();
-                setCardNumber(newValue);
-                (errors.cardNumber && value.length === 16) &&
-                setErrors(prev => ({ ...prev, cardNumber: "" }));
+                  setCardNumber(newValue);
+                  (errors.cardNumber && value.length === 16) &&
+                  setErrors(prev => ({ ...prev, cardNumber: "" }));
+                  saveField("cardNumber", newValue);
                 }}
               className={errors.cardNumber ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
               />
@@ -233,6 +268,7 @@ const OrderForm = () => {
                     setExpDate(v);
                     (errors.expDate && /^\d{2}\/\d{2}$/.test(v)) &&
                     setErrors(prev => ({ ...prev, expDate: "" }));
+                    saveField("expDate", v);
                   }}
                   className={errors.expDate ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
@@ -249,6 +285,7 @@ const OrderForm = () => {
                       setCvv(newCvv);
                       (errors.cvv && newCvv.length === 3) &&
                       setErrors(prev => ({ ...prev, cvv: "" }));
+                      saveField("cvv", newCvv);
                     }}
                     className={errors.cvv ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
