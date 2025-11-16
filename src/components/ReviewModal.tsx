@@ -36,7 +36,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
         setComment(order.review.comment);
         setSelectedTags(order.review.tags);
         setCustomTag("");
-        setCustomTags(order.review.tags); // Initialize custom tags from existing review
+        setCustomTags(order.review.tags.filter(tag => !PREDEFINED_TAGS.includes(tag as any))); // Initialize custom tags from existing review
       } else {
         // Reset for new review
         setRating(5);
