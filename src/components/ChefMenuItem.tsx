@@ -10,6 +10,9 @@ interface ChefMenuItemProps {
   ingredients: string[];
   nutritionFacts: string[];
   imageUrl: string;
+  inHome?: boolean;
+  chefName?: string;
+  lastOrdered?: string; 
 }
 
 const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
@@ -20,8 +23,19 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
   grams,
   ingredients,
   nutritionFacts,
-  imageUrl
+  imageUrl,
+  inHome,
+  chefName,
+  lastOrdered,
 }) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <Link
       to={`/order/${chefSlug}/${mealSlug}`}
@@ -37,6 +51,13 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
         <p className="font-semibold text-2xl leading-none -mt-0.5">{mealName}</p>
         <p className="font-semibold text-lg leading-none">${price.toFixed(2)}</p>
         <p className="text-sm text-gray-600 leading-none">{grams} grams</p>
+        {inHome && (
+          <div className="text-sm text-gray-600">
+            <p>Chef {chefName}</p>
+            {lastOrdered && <p>Last ordered {formatDate(lastOrdered)}</p>}
+          </div>
+        )}
+
       </div>
 
       <div className="text-right">
