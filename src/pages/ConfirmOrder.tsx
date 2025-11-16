@@ -97,7 +97,7 @@ const ConfirmOrder = () => {
 
           <button 
             onClick={handlePlaceOrder}
-            className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4">
+            className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4 hover:bg-gray-900 cursor-pointer">
             Confirm and Place Order
           </button>
           

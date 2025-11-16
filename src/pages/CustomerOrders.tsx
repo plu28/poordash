@@ -139,7 +139,7 @@ const Orders = () => {
             </div>
             <button
               onClick={handleCloseThankYou}
-              className="text-white/70 hover:text-white ml-2 text-xl"
+              className="text-white/70 hover:text-white ml-2 text-xl cursor-pointer"
             >
               ×
             </button>

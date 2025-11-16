@@ -11,7 +11,7 @@ const OrderConfirmed = () => {
         </p>
         <Link
           to="/customer-orders"
-          className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4"
+          className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4 hover:bg-gray-900"
         >
           View My Orders
         </Link>

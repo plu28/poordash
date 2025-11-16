@@ -25,7 +25,7 @@ const toggleUserType = () => {
             <p className="text-sm font-medium">Current role: {userType}</p>
             <button
               onClick={toggleUserType}
-              className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded transition-colors"
+              className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded transition-colors cursor-pointer"
             >
               Switch to {userType === "customer" ? "Chef" : "Customer"}
             </button>

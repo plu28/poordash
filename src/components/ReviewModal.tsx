@@ -122,7 +122,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             <h2 className="text-2xl font-bold text-gray-900">Leave a Review</h2>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl"
+              className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
             >
               ×
             </button>
@@ -153,7 +153,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                     key={star}
                     type="button"
                     onClick={() => handleStarClick(star)}
-                    className={`text-3xl hover:scale-110 transition-transform ${
+                    className={`text-3xl hover:scale-110 transition-transform cursor-pointer ${
                       star <= rating ? "text-yellow-400" : "text-gray-300"
                     }`}
                   >
@@ -200,7 +200,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                 <button
                   type="button"
                   onClick={handleAddCustomTag}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
                   disabled={!customTag.trim()}
                 >
                   Add
@@ -216,7 +216,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                       key={tag}
                       type="button"
                       onClick={() => handleTagToggle(tag)}
-                      className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
+                      className={`px-3 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                         selectedTags.includes(tag)
                           ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
                           : "bg-gray-100 text-gray-700 border-2 border-gray-200 hover:bg-gray-200"
@@ -240,7 +240,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                         key={tag}
                         type="button"
                         onClick={() => handleRemoveCustomTag(tag)}
-                        className="px-3 py-2 bg-green-100 text-green-800 border-2 border-green-300 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                        className="px-3 py-2 bg-green-100 text-green-800 border-2 border-green-300 rounded-full text-sm font-medium hover:bg-green-200 transition-colors cursor-pointer"
                       >
                         {tag} ×
                       </button>
@@ -254,13 +254,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
               >
                 Submit Review
               </button>

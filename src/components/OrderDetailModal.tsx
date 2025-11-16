@@ -49,7 +49,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             <h2 className="text-2xl font-bold text-gray-900">Order Details</h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl"
+              className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
             >
               ×
             </button>
@@ -115,7 +115,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   </div>
                   <button
                     onClick={onLeaveReview}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
                   >
                     Leave Review
                   </button>
@@ -127,7 +127,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           <div className="flex justify-end mt-8">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
             >
               Close
             </button>

@@ -40,7 +40,7 @@ const ChefMenuItem: React.FC<ChefMenuItemProps> = ({
     <Link
       to={`/order/${chefSlug}/${mealSlug}`}
       className="grid grid-cols-[auto_1fr] gap-3
-    bg-white p-6 rounded-lg shadow-sm border">
+    bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
       <img
         src={imageUrl}
         alt={mealName}

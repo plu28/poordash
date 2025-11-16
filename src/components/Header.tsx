@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ title, backButton }) => {
       {backButton && (
         <button
           onClick={() => navigate(-1)}
-          className="h-full flex items-center justify-center">
+          className="h-full flex items-center justify-center cursor-pointer">
           <ArrowLeft className="h-7 w-7"/>
         </button>
       )}

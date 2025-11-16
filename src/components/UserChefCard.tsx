@@ -24,7 +24,7 @@ const UserChefCard: React.FC<UserChefCardProps> = ({
   return (
     <Link
       to={`/chef/${slug}`}
-      className="flex gap-3 bg-white p-6 rounded-lg shadow-sm border">
+      className="flex gap-3 bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
       <img
         src={imageUrl}
         alt={`${chefName}'s image`}
