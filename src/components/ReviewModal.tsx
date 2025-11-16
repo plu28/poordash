@@ -11,6 +11,7 @@ interface ReviewModalProps {
     comment: string;
     tags: string[];
   }) => void;
+  isEditing?: boolean; // Optional prop to indicate if editing an existing review
 }
 
 const ReviewModal: React.FC<ReviewModalProps> = ({
@@ -18,6 +19,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   isOpen,
   onClose,
   onSubmitReview,
+  isEditing = false,
 }) => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
@@ -28,13 +30,23 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   // Reset form state when modal opens with a new order
   useEffect(() => {
     if (isOpen && order) {
-      setRating(5);
-      setComment("");
-      setSelectedTags([]);
-      setCustomTag("");
-      setCustomTags([]);
+      if (isEditing && order.review) {
+        // Pre-fill form with existing review data for editing
+        setRating(order.review.rating);
+        setComment(order.review.comment);
+        setSelectedTags(order.review.tags);
+        setCustomTag("");
+        setCustomTags(order.review.tags); // Initialize custom tags from existing review
+      } else {
+        // Reset for new review
+        setRating(5);
+        setComment("");
+        setSelectedTags([]);
+        setCustomTag("");
+        setCustomTags([]);
+      }
     }
-  }, [isOpen, order]);
+  }, [isOpen, order, isEditing]);
 
   if (!isOpen || !order) return null;
 
@@ -83,7 +95,9 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Leave a Review</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {isEditing ? "Edit Review" : "Leave a Review"}
+            </h2>
             <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 text-2xl"
@@ -223,7 +237,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                 type="submit"
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Submit Review
+                {isEditing ? "Update Review" : "Submit Review"}
               </button>
             </div>
           </form>

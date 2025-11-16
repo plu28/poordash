@@ -3,6 +3,7 @@ export interface Review {
 	comment: string;
 	tags: string[];
 	date: string; // ISO date string
+	editedDate?: string; // ISO date string, optional - only present if review has been edited
 }
 
 export type StateType = "NotStarted" | "InProgress" | "Ready" | "Complete";
@@ -22,7 +23,7 @@ export interface Order {
 	orderDate: string; // ISO date string
 	price: number;
 	options?: string[]; // Optional, only if specified
-	state: StateType; // New order should be NotStarted 
+	state: StateType; // New order should be NotStarted
 	review?: Review; // Optional, only if reviewed
 	delivery?: Delivery;
 }

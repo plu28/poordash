@@ -1,6 +1,20 @@
 import React from 'react';
 import type { Order } from '../types';
 
+const getTimeAgo = (dateString: string) => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffMins < 1) return 'just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return `${diffDays}d ago`;
+};
+
 interface OrderCardProps {
   order: Order;
   onClick: () => void;
@@ -52,6 +66,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
                 {renderStars(order.review.rating)}
                 <span className="text-xs text-gray-500">
                   {new Date(order.review.date).toLocaleDateString()}
+                  {order.review.editedDate && (
+                    <span className="ml-1">
+                      (edited {getTimeAgo(order.review.editedDate)})
+                    </span>
+                  )}
                 </span>
               </div>
               {order.review.comment && (

@@ -6,13 +6,15 @@ interface OrderDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLeaveReview: () => void;
+  onEditReview?: () => void; // Optional callback for editing existing reviews
 }
 
 const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   order,
   isOpen,
   onClose,
-  onLeaveReview
+  onLeaveReview,
+  onEditReview
 }) => {
   if (!isOpen || !order) return null;
 
@@ -39,6 +41,20 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         ))}
       </div>
     );
+  };
+
+  const getTimeAgo = (dateString: string) => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 1) return 'just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${diffDays}d ago`;
   };
 
   return (
@@ -75,12 +91,27 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
             {order.review ? (
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-gray-900 mb-3">Your Review</h4>
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-semibold text-gray-900">Your Review</h4>
+                  {onEditReview && (
+                    <button
+                      onClick={onEditReview}
+                      className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     {renderStars(order.review.rating)}
                     <span className="text-sm text-gray-500">
                       Reviewed on {formatDate(order.review.date)}
+                      {order.review.editedDate && (
+                        <span className="ml-1">
+                          (edited {getTimeAgo(order.review.editedDate)})
+                        </span>
+                      )}
                     </span>
                   </div>
                   {order.review.comment && (

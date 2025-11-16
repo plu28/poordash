@@ -14,6 +14,7 @@ const Orders = () => {
   const [showOrderDetail, setShowOrderDetail] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [isEditingReview, setIsEditingReview] = useState(false);
 
   useEffect(() => {
     const loadOrders = () => {
@@ -61,10 +62,23 @@ const Orders = () => {
   }) => {
     if (!selectedOrder) return;
 
-    const review = {
-      ...reviewData,
-      date: new Date().toISOString(),
-    };
+    const now = new Date().toISOString();
+
+    let review;
+    if (isEditingReview && selectedOrder.review) {
+      // Update existing review with editedDate
+      review = {
+        ...reviewData,
+        date: selectedOrder.review.date, // Keep original creation date
+        editedDate: now,
+      };
+    } else {
+      // Create new review
+      review = {
+        ...reviewData,
+        date: now,
+      };
+    }
 
     updateOrder(selectedOrder.id, { review });
 
@@ -77,12 +91,20 @@ const Orders = () => {
 
     setSelectedOrder(null);
     setShowReviewModal(false);
+    setIsEditingReview(false);
     setShowThankYou(true);
   };
 
   const handleCloseReviewModal = () => {
     setShowReviewModal(false);
     setSelectedOrder(null);
+    setIsEditingReview(false);
+  };
+
+  const handleEditReview = () => {
+    setShowOrderDetail(false);
+    setIsEditingReview(true);
+    setShowReviewModal(true);
   };
 
   const handleCloseThankYou = () => {
@@ -118,6 +140,7 @@ const Orders = () => {
         isOpen={showOrderDetail}
         onClose={handleCloseOrderDetail}
         onLeaveReview={handleLeaveReview}
+        onEditReview={handleEditReview}
       />
 
       <ReviewModal
@@ -125,6 +148,7 @@ const Orders = () => {
         isOpen={showReviewModal}
         onClose={handleCloseReviewModal}
         onSubmitReview={handleSubmitReview}
+        isEditing={isEditingReview}
       />
 
       {showThankYou && (
