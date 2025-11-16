@@ -94,9 +94,12 @@ const Home = () => {
 
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   useEffect(() => {
-    const allOrders = getOrders().slice().reverse();
+    const allOrders = getOrders()
+    const realOrders = allOrders.slice(10);
+    const reversed = realOrders.slice().reverse();
+
     const uniqueOrders = Array.from(
-      new Map(allOrders.map(o => [`${o.chefName}-${o.dishName}`, o])).values()
+      new Map(reversed.map(o => [`${o.chefName}-${o.dishName}`, o])).values()
     );
     setRecentOrders(uniqueOrders.slice(0, 2));
   }, []);
@@ -122,8 +125,7 @@ const Home = () => {
         <div className="space-y-4">
           <h1 className="text-xl font-bold text-gray-900"> Order Again</h1>
           {recentOrders.length == 0 && (
-            <p className="text-gray-600"> No previous orders.</p>
-          )}
+            <p className="text-gray-600"> No previous orders.</p>)}
           {recentOrders.map((order) => {
             const chef = chefsWithMenu.find((c) => c.chefName === (order as any).chefName);
             if (!chef) {
