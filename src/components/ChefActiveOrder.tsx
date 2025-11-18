@@ -82,15 +82,15 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 			</div>
 			<div className="absolute bottom-4 right-4">
 				{state === "NotStarted" && (
-					<Button onClick={() => onChangeState(id, "InProgress")} className="bg-orange-200 hover:bg-orange-100 shadow-lg rounded-4xl min-w-[175px]" variant="outline">Mark As In Progress</Button>
+					<Button onClick={() => onChangeState(id, "InProgress")} className="bg-orange-200 hover:bg-orange-100 shadow-lg rounded-4xl min-w-[175px] cursor-pointer" variant="outline">Mark As In Progress</Button>
 				)}
 
 				{state === "InProgress" && (
-					<Button onClick={() => onChangeState(id, "Ready")} className="bg-yellow-100 hover:bg-yellow-100 shadow-lg rounded-4xl min-w-[175px]" variant="outline">Mark As Ready</Button>
+					<Button onClick={() => onChangeState(id, "Ready")} className="bg-yellow-100 hover:bg-yellow-100 shadow-lg rounded-4xl min-w-[175px] cursor-pointer" variant="outline">Mark As Ready</Button>
 				)}
 
 				{state === "Ready" && (
-					<Button onClick={() => onChangeState(id, "Complete")} className="bg-green-200 hover:bg-green-100 shadow-lg rounded-4xl min-w-[175px]" variant="outline">Mark As Complete</Button>
+					<Button onClick={() => onChangeState(id, "Complete")} className="bg-green-200 hover:bg-green-100 shadow-lg rounded-4xl min-w-[175px] cursor-pointer" variant="outline">Mark As Complete</Button>
 				)}
 			</div>
 		</div>
