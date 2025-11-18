@@ -1,18 +1,21 @@
 import React from 'react';
 import type { Order } from '../types';
+import { getTimeAgo } from '../lib/utils';
 
 interface OrderDetailModalProps {
   order: Order | null;
   isOpen: boolean;
   onClose: () => void;
   onLeaveReview: () => void;
+  onEditReview?: () => void; // Optional callback for editing existing reviews
 }
 
 const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   order,
   isOpen,
   onClose,
-  onLeaveReview
+  onLeaveReview,
+  onEditReview
 }) => {
   if (!isOpen || !order) return null;
 
@@ -40,6 +43,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       </div>
     );
   };
+
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-60 p-4">
@@ -75,12 +79,27 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
             {order.review ? (
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-gray-900 mb-3">Your Review</h4>
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-semibold text-gray-900">Your Review</h4>
+                  {onEditReview && (
+                    <button
+                      onClick={onEditReview}
+                      className="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm rounded-md border border-blue-200 transition-colors"
+                    >
+                      Edit Review
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     {renderStars(order.review.rating)}
                     <span className="text-sm text-gray-500">
                       Reviewed on {formatDate(order.review.date)}
+                      {order.review.editedDate && (
+                        <span className="ml-1">
+                          (edited {getTimeAgo(order.review.editedDate)})
+                        </span>
+                      )}
                     </span>
                   </div>
                   {order.review.comment && (

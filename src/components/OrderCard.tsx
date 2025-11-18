@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Order } from '../types';
+import { getTimeAgo } from '../lib/utils';
 
 interface OrderCardProps {
   order: Order;
@@ -59,6 +60,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
                 {renderStars(order.review.rating)}
                 <span className="text-xs text-gray-500">
                   {new Date(order.review.date).toLocaleDateString()}
+                  {order.review.editedDate && (
+                    <span className="ml-1">
+                      (edited {getTimeAgo(order.review.editedDate)})
+                    </span>
+                  )}
                 </span>
               </div>
               {order.review.comment && (
