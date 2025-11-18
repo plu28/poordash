@@ -50,14 +50,32 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
 
   if (!isOpen || !order) return null;
 
+  const saveDraft = (key: string, value: string | string[]) => {
+  if (!order) {
+    return;
+  } 
+  const storageKey = `review_draft_${order.id}`;
+  const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  draft[key] = value;
+  localStorage.setItem(storageKey, JSON.stringify(draft));
+};
+
   const handleStarClick = (starRating: number) => {
     setRating(starRating);
+    saveDraft("rating", starRating.toString());
   };
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    setSelectedTags((prev) => {
+      let stored; 
+      if (prev.includes(tag)) {
+        stored = prev.filter((t) => t !== tag);
+      } else {
+        stored = [...prev, tag];
+      }
+      saveDraft("tags", stored);
+      return stored;
+    });
   };
 
   const handleAddCustomTag = () => {
@@ -66,15 +84,31 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       !customTags.includes(customTag.trim()) &&
       !selectedTags.includes(customTag.trim())
     ) {
-      setCustomTags((prev) => [...prev, customTag.trim()]);
-      setSelectedTags((prev) => [...prev, customTag.trim()]);
+      setCustomTags((prev) => {
+        const stored = [...prev, customTag.trim()];
+        saveDraft("customTags", stored);
+        return stored;
+    });
+      setSelectedTags((prev) => {
+        const stored = [...prev, customTag.trim()];
+        saveDraft("tags", stored);
+        return stored;
+    });
       setCustomTag("");
     }
   };
 
   const handleRemoveCustomTag = (tag: string) => {
-    setCustomTags((prev) => prev.filter((t) => t !== tag));
-    setSelectedTags((prev) => prev.filter((t) => t !== tag));
+    setCustomTags((prev) => {
+      const stored = prev.filter((t) => t !== tag);
+      saveDraft("customTags", stored);
+      return stored;
+    });
+    setSelectedTags((prev) => {
+      const stored = prev.filter((t) => t !== tag);
+      saveDraft("tags", stored);
+      return stored;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -100,7 +134,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             </h2>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl"
+              className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
             >
               ×
             </button>
@@ -131,7 +165,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                     key={star}
                     type="button"
                     onClick={() => handleStarClick(star)}
-                    className={`text-3xl hover:scale-110 transition-transform ${
+                    className={`text-3xl hover:scale-110 transition-transform cursor-pointer ${
                       star <= rating ? "text-yellow-400" : "text-gray-300"
                     }`}
                   >
@@ -147,7 +181,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               </label>
               <textarea
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                  saveDraft("comment", e.target.value);
+                }}
                 placeholder="Share your experience with this dish..."
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 rows={4}
@@ -175,7 +212,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                 <button
                   type="button"
                   onClick={handleAddCustomTag}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
                   disabled={!customTag.trim()}
                 >
                   Add
@@ -191,7 +228,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                       key={tag}
                       type="button"
                       onClick={() => handleTagToggle(tag)}
-                      className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
+                      className={`px-3 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                         selectedTags.includes(tag)
                           ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
                           : "bg-gray-100 text-gray-700 border-2 border-gray-200 hover:bg-gray-200"
@@ -215,7 +252,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                         key={tag}
                         type="button"
                         onClick={() => handleRemoveCustomTag(tag)}
-                        className="px-3 py-2 bg-green-100 text-green-800 border-2 border-green-300 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                        className="px-3 py-2 bg-green-100 text-green-800 border-2 border-green-300 rounded-full text-sm font-medium hover:bg-green-200 transition-colors cursor-pointer"
                       >
                         {tag} ×
                       </button>
@@ -229,13 +266,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
               >
                 {isEditing ? "Update Review" : "Submit Review"}
               </button>

@@ -91,13 +91,13 @@ const ConfirmOrder = () => {
             <span>${Number(tips || 0).toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span>Total</span>
-            <span>${total.toFixed(2)}</span>
+            <span><b>Total</b></span>
+            <span><b>${total.toFixed(2)}</b></span>
           </div>
 
           <button 
             onClick={handlePlaceOrder}
-            className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4">
+            className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4 hover:bg-gray-900 cursor-pointer">
             Confirm and Place Order
           </button>
           

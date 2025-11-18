@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,39 @@ const OrderForm = () => {
   const [cvv, setCvv] = useState("");
 
   const [tips, setTips] = useState("");
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("checkout_form") || "{}");
+    if (saved.address) {
+    setAddress(saved.address); 
+    }
+    if (saved.city) {
+      setCity(saved.city);
+    }
+    if (saved.usState) {
+      setUsState(saved.usState);
+    } 
+    if (saved.zip) {
+      setZip(saved.zip);
+    }
+    if (saved.cardNumber) {
+      setCardNumber(saved.cardNumber); 
+    }
+    if (saved.expDate) {
+      setExpDate(saved.expDate);
+    }
+    if (saved.cvv) {
+      setCvv(saved.cvv);
+    } 
+  }, []);
+
+  const saveField = (key: string, value: string) => {
+    const field = JSON.parse(localStorage.getItem("checkout_form") || "{}");
+    field[key] = value;
+    localStorage.setItem("checkout_form", JSON.stringify(field));
+  };
 
   const menu = [
     {
@@ -80,8 +113,42 @@ const OrderForm = () => {
   const tax = meal.price * 0.0975;
   const total = meal.price + tax + tip;
 
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!address.trim()) {
+      newErrors.address = "Address is required.";
+    }
+    if (!city.trim()) {
+      newErrors.city = "City is required.";
+    }
+    if (usState.length != 2) {
+      newErrors.usState = "State must be a 2-letter code (e.g. CA)."
+    }
+    if (zip.length != 5) {
+      newErrors.zip = "ZIP code must be 5 digits."
+    }
+    const digits = cardNumber.replace(/\s/g, "");
+    if (digits.length !== 16) {
+      newErrors.cardNumber = "Card number must be 16 digits.";
+    }
+    if (!/^\d{2}\/\d{2}$/.test(expDate)) {
+      newErrors.expDate = "Expiration date must be in MM/YY format.";
+    }
+    if (cvv.length !== 3) {
+      newErrors.cvv = "CVV must be 3 digits.";
+    }
+    return newErrors;
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationErrors = validate();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
 
     navigate("/confirm-order", {
       state: {
@@ -113,27 +180,41 @@ const OrderForm = () => {
           <div className="space-y-2"> 
             Address<span className="text-red-500">*</span>
             <Input
-              value={address} onChange={(e) => setAddress(e.target.value)} required
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                errors.address && setErrors(prev => ({ ...prev, address: "" }));
+                saveField("address", e.target.value);
+              }}
+              className={errors.address ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""}
             />
             <div className="flex gap-2">
               <div className="flex flex-col flex-1">
                 <label>
                   City<span className="text-red-500">*</span>
-                  <Input value={city} onChange={(e) => setCity(e.target.value)} required />
+                  <Input value={city} onChange={(e) => {
+                    setCity(e.target.value);
+                    errors.city && setErrors(prev => ({ ...prev, city: "" }));
+                    saveField("city", e.target.value);
+                  }}
+                  className={errors.city ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
+                  />
                 </label>
               </div>
               <div className="flex flex-col w-14">
                 <label>
                 State<span className="text-red-500">*</span>
                 <Input
-                  minLength={2}
                   maxLength={2}
                   value={usState}
                   onChange={(e) => {
                     const value = e.target.value.toUpperCase().replace(/[^A-Za-z]/g, "");
                     setUsState(value);
+                    (errors.usState && value.length === 2) &&
+                    setErrors(prev => ({ ...prev, usState: "" }));
+                    saveField("usState", value);
                   }}
-                  required
+                  className={errors.usState ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                 />
                 </label>
               </div>
@@ -141,11 +222,16 @@ const OrderForm = () => {
                 <label>
                   Zip<span className="text-red-500">*</span>
                 <Input
-                  minLength={5}
-                  maxLength={5}
-                  value={zip}
-                  onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))}
-                  required
+                    maxLength={5}
+                    value={zip}
+                    onChange={(e) => {
+                      const newZip = e.target.value.replace(/\D/g, "");
+                      setZip(newZip);
+                      (errors.zip && newZip.length === 5) &&
+                      setErrors(prev => ({ ...prev, zip: "" }));
+                      saveField("zip", newZip);
+                    }}
+                    className={errors.zip ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
                 </label>
               </div>
@@ -154,15 +240,17 @@ const OrderForm = () => {
             <div>
               Card Number<span className="text-red-500">*</span>
               <Input
-              minLength={19}
               maxLength={19}
               value={cardNumber}
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, "").slice(0, 16);
-                value = value.replace(/(.{4})/g, "$1 ").trim();
-                setCardNumber(value);
+                let newValue = value.replace(/(.{4})/g, "$1 ").trim();
+                  setCardNumber(newValue);
+                  (errors.cardNumber && value.length === 16) &&
+                  setErrors(prev => ({ ...prev, cardNumber: "" }));
+                  saveField("cardNumber", newValue);
                 }}
-              required  
+              className={errors.cardNumber ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
               />
             </div>
 
@@ -173,14 +261,16 @@ const OrderForm = () => {
                 <Input
                   value={expDate}
                   placeholder="MM/YY"
-                  minLength={5}
                   maxLength={5}
                   onChange={(e) => {
                     let v = e.target.value.replace(/\D/g, "").slice(0, 4);
                     if (v.length >= 3) v = v.slice(0, 2) + "/" + v.slice(2);
                     setExpDate(v);
+                    (errors.expDate && /^\d{2}\/\d{2}$/.test(v)) &&
+                    setErrors(prev => ({ ...prev, expDate: "" }));
+                    saveField("expDate", v);
                   }}
-                  required
+                  className={errors.expDate ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
                 </label>
               </div>
@@ -188,11 +278,16 @@ const OrderForm = () => {
                 <label>
                   CVV<span className="text-red-500">*</span>
                 <Input
-                  minLength={3}
-                  maxLength={3}
-                  value={cvv}
-                  onChange={(e) => setCvv(e.target.value.replace(/\D/g, ""))}
-                  required
+                    maxLength={3}
+                    value={cvv}
+                    onChange={(e) => {
+                      const newCvv = e.target.value.replace(/\D/g, "");
+                      setCvv(newCvv);
+                      (errors.cvv && newCvv.length === 3) &&
+                      setErrors(prev => ({ ...prev, cvv: "" }));
+                      saveField("cvv", newCvv);
+                    }}
+                    className={errors.cvv ? "border-red-500 ring-red-500 focus-visible:ring-red-500" : ""} 
                   />
                 </label> 
               </div>
@@ -232,13 +327,25 @@ const OrderForm = () => {
 
             <div className="flex justify-between">
               <span><b>Total</b></span>
-              <span>${total.toFixed(2)}</span>
+              <span><b>${total.toFixed(2)}</b></span>
             </div>
           </div>
 
+          {Object.values(errors).some(err => err) && (
+            <div className="bg-red-50 border border-red-300 text-red-700 p-3 rounded-md mt-3">
+              <ul className="list-disc ml-4 text-sm">
+                {Object.values(errors)
+                  .filter(err => err)
+                  .map((err, idx) => (
+                  <li key={idx}>{err}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <button
             type="submit"
-            className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4">
+            className="block w-full bg-black text-white text-center py-3 rounded-lg text-lg font-medium mt-4 hover:bg-gray-900 cursor-pointer">
             Pay ${total.toFixed(2)}
           </button>
           
