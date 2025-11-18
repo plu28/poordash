@@ -6,7 +6,7 @@ export interface Review {
 	editedDate?: string; // ISO date string, optional - only present if review has been edited
 }
 
-export type StateType = "NotStarted" | "InProgress" | "Ready" | "Complete";
+export type StateType = "Not Started" | "In Progress" | "Ready" | "Complete" | "Cancelled";
 
 export interface Delivery {
 	address: string;

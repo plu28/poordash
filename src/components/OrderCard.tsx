@@ -1,6 +1,8 @@
 import React from 'react';
 import type { Order } from '../types';
 import { getTimeAgo } from '../lib/utils';
+import { clsx } from 'clsx';
+import type { StateType } from '../types'
 
 interface OrderCardProps {
   order: Order;
@@ -31,6 +33,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
     );
   };
 
+  const statusColors: Record<StateType, string> = {
+    'Not Started': "bg-orange-200",
+    'In Progress': "bg-yellow-100",
+    Ready: "bg-green-200",
+    Complete: "bg-green-500 text-white",
+    Cancelled: "bg-red-600 text-white",
+  };
+
   const draftKey = `review_draft_${order.id}`;
   const isDraft = !!localStorage.getItem(draftKey);
 
@@ -40,11 +50,23 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
       onClick={onClick}
     >
       <div className="flex gap-4">
-        <img
-          src={order.imageUrl}
-          alt={order.dishName}
-          className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
-        />
+		<div className="flex-row">
+			<img
+			  src={order.imageUrl}
+			  alt={order.dishName}
+			  className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+			/>
+			<div className="flex flex-wrap gap-1 mt-1 items-center justify-center">
+				<span
+					className={clsx(
+					  "px-2 py-1 w-21 text-center text-xs rounded-full",
+					  statusColors[order.state]
+					)}
+				>
+				  {order.state}
+				</span>
+			</div>
+		</div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 truncate">{order.dishName}</h3>
           <p className="text-sm text-gray-600">{order.chefName}</p>

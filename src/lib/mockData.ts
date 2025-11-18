@@ -69,7 +69,7 @@ const mockOrders: Order[] = [
     orderDate: "2024-10-20T17:30:00Z",
     price: 39.0,
     options: ["Medium rare", "Extra mushroom duxelles"],
-    state: "InProgress",
+    state: "In Progress",
   },
   {
     id: "order-5",
@@ -104,7 +104,7 @@ const mockOrders: Order[] = [
     orderDate: "2024-11-08T17:10:00Z",
     price: 15.5,
     options: ["Extra mozzarella", "Thin crust", "Add chili flakes", "No basil"],
-    state: "NotStarted",
+    state: "Not Started",
     delivery: {
       address: "234 Cherry Lane, Apt 12A",
       city: "San Francisco",
@@ -149,7 +149,7 @@ const mockOrders: Order[] = [
     orderDate: "2024-11-03T18:00:00Z",
     price: 28.75,
     options: [],
-    state: "InProgress",
+    state: "In Progress",
     // pickup order
   },
   {
@@ -161,7 +161,7 @@ const mockOrders: Order[] = [
     orderDate: "2024-11-07T19:00:00Z",
     price: 21.0,
     options: ["Extra naan", "Mild spice", "Add cucumber raita"],
-    state: "NotStarted",
+    state: "Not Started",
     delivery: {
       address: "22 Birch Boulevard, House 9",
       city: "San Francisco",
