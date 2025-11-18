@@ -10,14 +10,18 @@ import { getOrders, updateOrder } from "../lib/orderStorage";
 const ChefOrders = () => {
 	const [orders, setOrders] = useState(getOrders());
 
-	// Only shows orders which aren't complete
-	const activeOrders = orders.filter((order) => order.state !== "Complete")
+	// Only shows orders which aren't complete or cancelled
+	const activeOrders = orders.filter((order) => order.state !== "Complete" && order.state !== "Cancelled")
 
 	const handleStateChange = (id: string, newState: StateType): void => {
 		updateOrder(id, {state: newState});
 		setOrders(getOrders());
 	}
 
+	const handleCancelClick = (id: string): void => {
+		updateOrder(id, {state: "Cancelled"});
+		setOrders(getOrders());
+	}
 
 	return (
 		<Layout showBottomNav={true} bottomNavVariant="chef">
@@ -37,6 +41,7 @@ const ChefOrders = () => {
 								delivery={order.delivery}
 								orderDate={order.orderDate}
 								onChangeState={handleStateChange}
+								onCancelOrder={handleCancelClick}
 							/>
 						)
 					})
