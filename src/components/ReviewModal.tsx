@@ -30,7 +30,24 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   // Reset form state when modal opens with a new order
   useEffect(() => {
     if (isOpen && order) {
-      if (isEditing && order.review) {
+      const storageKey = `review_draft_${order.id}`;
+      let draft: any = {};
+      
+      try {
+        draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      } catch (e) {
+        console.error("Failed to load review draft:", e);
+        // Continue with default behavior
+      }
+
+      if (Object.keys(draft).length > 0) {
+        // Load draft data to continue editing
+        setRating(parseInt(draft.rating) || 5);
+        setComment(draft.comment || "");
+        setSelectedTags(draft.tags || []);
+        setCustomTag("");
+        setCustomTags(draft.customTags || []);
+      } else if (isEditing && order.review) {
         // Pre-fill form with existing review data for editing
         setRating(order.review.rating);
         setComment(order.review.comment);
@@ -68,9 +85,15 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     return;
   }
   const storageKey = `review_draft_${order.id}`;
-  const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
-  draft[key] = value;
-  localStorage.setItem(storageKey, JSON.stringify(draft));
+  
+  try {
+    const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    draft[key] = value;
+    localStorage.setItem(storageKey, JSON.stringify(draft));
+  } catch (e) {
+    console.error("Failed to save review draft:", e);
+    // Continue with default behavior
+  }
 };
 
   const handleStarClick = (starRating: number) => {
@@ -133,7 +156,12 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     });
     // Clear draft after submission
     if (order) {
-      localStorage.removeItem(`review_draft_${order.id}`);
+      try {
+        localStorage.removeItem(`review_draft_${order.id}`);
+      } catch (e) {
+        console.error("Failed to remove review draft:", e);
+        // Continue with default behavior
+      }
     }
   };
 
