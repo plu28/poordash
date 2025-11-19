@@ -30,7 +30,17 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   // Reset form state when modal opens with a new order
   useEffect(() => {
     if (isOpen && order) {
-      if (isEditing && order.review) {
+      const storageKey = `review_draft_${order.id}`;
+      const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+      if (Object.keys(draft).length > 0) {
+        // Load draft data to continue editing
+        setRating(parseInt(draft.rating) || 5);
+        setComment(draft.comment || "");
+        setSelectedTags(draft.tags || []);
+        setCustomTag("");
+        setCustomTags(draft.customTags || []);
+      } else if (isEditing && order.review) {
         // Pre-fill form with existing review data for editing
         setRating(order.review.rating);
         setComment(order.review.comment);
@@ -53,7 +63,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   const saveDraft = (key: string, value: string | string[]) => {
   if (!order) {
     return;
-  } 
+  }
   const storageKey = `review_draft_${order.id}`;
   const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
   draft[key] = value;
@@ -67,7 +77,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags((prev) => {
-      let stored; 
+      let stored;
       if (prev.includes(tag)) {
         stored = prev.filter((t) => t !== tag);
       } else {
@@ -118,6 +128,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       comment: comment.trim(),
       tags: selectedTags,
     });
+    // Clear draft after submission
+    if (order) {
+      localStorage.removeItem(`review_draft_${order.id}`);
+    }
   };
 
   const handleClose = () => {
