@@ -16,7 +16,7 @@ import type { Order, StateType } from "../types/index"
 
 type ChefActiveOrderProps = Order & {
 	onChangeState: (id: string, newState: StateType) => void;
-	onCancelOrder: (id: string) => void;
+	onCancelOrder: (id: string, oldState: StateType) => void;
 }
 
 const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
@@ -60,7 +60,7 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 			</AlertDialogHeader>
 			<AlertDialogFooter>
 				<AlertDialogCancel className="bg-black hover:bg-gray-700 text-white hover:text-white">Return to Orders</AlertDialogCancel>
-				<AlertDialogAction onClick={() => {onCancelOrder(id)}} className="bg-red-500 hover:bg-red-400 text-white hover:text-white">Cancel This Order</AlertDialogAction>
+				<AlertDialogAction onClick={() => {onCancelOrder(id, state)}} className="bg-red-500 hover:bg-red-400 text-white hover:text-white">Cancel This Order</AlertDialogAction>
 			</AlertDialogFooter>
 		</AlertDialogContent>
 	);
