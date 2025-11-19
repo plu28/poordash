@@ -31,7 +31,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   useEffect(() => {
     if (isOpen && order) {
       const storageKey = `review_draft_${order.id}`;
-      const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      let draft: any = {};
+      
+      try {
+        draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      } catch (e) {
+        console.error("Failed to load review draft:", e);
+        // Continue with default behavior
+      }
 
       if (Object.keys(draft).length > 0) {
         // Load draft data to continue editing
@@ -65,9 +72,15 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     return;
   }
   const storageKey = `review_draft_${order.id}`;
-  const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
-  draft[key] = value;
-  localStorage.setItem(storageKey, JSON.stringify(draft));
+  
+  try {
+    const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    draft[key] = value;
+    localStorage.setItem(storageKey, JSON.stringify(draft));
+  } catch (e) {
+    console.error("Failed to save review draft:", e);
+    // Continue with default behavior
+  }
 };
 
   const handleStarClick = (starRating: number) => {
@@ -130,7 +143,12 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     });
     // Clear draft after submission
     if (order) {
-      localStorage.removeItem(`review_draft_${order.id}`);
+      try {
+        localStorage.removeItem(`review_draft_${order.id}`);
+      } catch (e) {
+        console.error("Failed to remove review draft:", e);
+        // Continue with default behavior
+      }
     }
   };
 
