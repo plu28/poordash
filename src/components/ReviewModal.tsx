@@ -55,12 +55,25 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
         setCustomTag("");
         setCustomTags(order.review.tags.filter(tag => !PREDEFINED_TAGS.includes(tag as any))); // Initialize custom tags from existing review
       } else {
-        // Reset for new review
-        setRating(5);
-        setComment("");
-        setSelectedTags([]);
-        setCustomTag("");
-        setCustomTags([]);
+        // Load draft data for new reviews only
+        const storageKey = `review_draft_${order.id}`;
+        const draft = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+        if (Object.keys(draft).length > 0) {
+          // Load draft data to continue editing
+          setRating(parseInt(draft.rating) || 5);
+          setComment(draft.comment || "");
+          setSelectedTags(draft.tags || []);
+          setCustomTag("");
+          setCustomTags(draft.customTags || []);
+        } else {
+          // Reset for new review
+          setRating(5);
+          setComment("");
+          setSelectedTags([]);
+          setCustomTag("");
+          setCustomTags([]);
+        }
       }
     }
   }, [isOpen, order, isEditing]);
