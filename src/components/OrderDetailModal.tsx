@@ -84,7 +84,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   {onEditReview && (
                     <button
                       onClick={onEditReview}
-                      className="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm rounded-md border border-blue-200 transition-colors"
+                      className="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm rounded-md border border-blue-200 transition-colors cursor-pointer"
                     >
                       Edit Review
                     </button>

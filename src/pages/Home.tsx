@@ -94,13 +94,14 @@ const Home = () => {
 
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   useEffect(() => {
-    const allOrders = getOrders()
+    const allOrders = getOrders();
     const realOrders = allOrders.slice(10);
-    const reversed = realOrders.slice().reverse();
-
-    const uniqueOrders = Array.from(
-      new Map(reversed.map(o => [`${o.chefName}-${o.dishName}`, o])).values()
-    );
+    const uniqueMap = new Map<string, Order>();
+    for (const o of realOrders) {
+      uniqueMap.set(`${o.chefName}-${o.dishName}`, o);
+    }
+    const uniqueOrders = Array.from(uniqueMap.values())
+      .sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
     setRecentOrders(uniqueOrders.slice(0, 2));
   }, []);
 

@@ -59,8 +59,8 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 				</AlertDialogDescription>
 			</AlertDialogHeader>
 			<AlertDialogFooter>
-				<AlertDialogCancel className="bg-black hover:bg-gray-700 text-white hover:text-white">Return to Orders</AlertDialogCancel>
-				<AlertDialogAction onClick={() => {onCancelOrder(id, state)}} className="bg-red-500 hover:bg-red-400 text-white hover:text-white">Cancel This Order</AlertDialogAction>
+				<AlertDialogCancel className="bg-black hover:bg-gray-700 text-white hover:text-white cursor-pointer">Return to Orders</AlertDialogCancel>
+				<AlertDialogAction onClick={() => {onCancelOrder(id, state)}} className="bg-red-500 hover:bg-red-400 text-white hover:text-white cursor-pointer">Cancel This Order</AlertDialogAction>
 			</AlertDialogFooter>
 		</AlertDialogContent>
 	);
@@ -121,7 +121,7 @@ const ChefActiveOrder: React.FC<ChefActiveOrderProps> = ({
 					)}
 					<AlertDialog>
 						<AlertDialogTrigger asChild>
-							<Button className="text-red-400 h-6 text-xs mt-1" variant="link">Cancel Order</Button>
+							<Button className="text-red-400 h-6 text-xs mt-1 cursor-pointer" variant="link">Cancel Order</Button>
 						</AlertDialogTrigger>
 						{CancelPopup}
 					</AlertDialog>
